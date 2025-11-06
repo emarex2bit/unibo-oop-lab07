@@ -3,6 +3,7 @@ package it.unibo.inner;
 import it.unibo.inner.api.IterableWithPolicy;
 import it.unibo.inner.api.Predicate;
 import it.unibo.inner.test.api.Product;
+import it.unibo.inner.test.impl.IterableWithPolicyImpl;
 import it.unibo.inner.test.impl.ProductImpl;
 
 import java.util.Arrays;
@@ -15,11 +16,11 @@ public class TestIterableWithPolicy {
     private TestIterableWithPolicy() {}
 
     private static <T> IterableWithPolicy<T> makeIterableWithPolicy(final T[] elements, final Predicate<T> filter) {
-        return null; // TODO: return the implementation of IterableWithPolicy
+        return new IterableWithPolicyImpl<>(elements, filter);
     }
 
     private static <T> IterableWithPolicy<T> makeIterableWithPolicy(final T[] elements) {
-        return null; // TODO: return the implementation of IterableWithPolicy
+        return new IterableWithPolicyImpl<T>(elements);
     }
 
     public static void main(final String[] args) {
@@ -35,6 +36,7 @@ public class TestIterableWithPolicy {
                 return elem.equals("foo") || elem.equals("bar");
             }
         };
+        
         // Create iterables
         final IterableWithPolicy<String> evenIterable = makeIterableWithPolicy(test1, filterPippoPluto);
         final IterableWithPolicy<String> oddIterable = makeIterableWithPolicy(test1, filterFooBar);
