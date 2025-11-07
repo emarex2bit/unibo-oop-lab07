@@ -11,10 +11,10 @@ public interface Function<I, O> {
     /**
      * Calls the function.
      *
-     * @param input the input of the function
+     * @param x the input of the function
      * @return the result of the function evaluation on the provided input
      */
-    O call(I input);
+    O call(I x);
 
     /**
      * Returns the identity function, which returns the same object that is provided as input.
