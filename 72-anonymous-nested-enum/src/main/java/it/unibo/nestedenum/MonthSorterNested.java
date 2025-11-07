@@ -1,11 +1,6 @@
 package it.unibo.nestedenum;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
 /**
  * Implementation of {@link MonthSorter}.
  */
@@ -13,69 +8,87 @@ public final class MonthSorterNested implements MonthSorter {
 
     @Override
     public Comparator<String> sortByDays() {
-        return null;
+        return new SortByDate();
     }
 
     @Override
     public Comparator<String> sortByOrder() {
-        return null;
+        return new SortByMonthOrder();
     }
 
     enum Month
     {
-        JENUARY,
-        FEBRUARY,
-        MARCH,
-        APRIL,
-        MAY,
-        JUNE,
-        JULY,
-        AUGUST,
-        SEMPTEMBER,
-        OCTOBER,
-        NOVEMBER,
-        DECEMBER;
+        JANUARY(31,1),
+        FEBRUARY(28,2),
+        MARCH(31,3),
+        APRIL(30,4),
+        MAY(31,5),
+        JUNE(30,6),
+        JULY(31,7),
+        AUGUST(31,8),
+        SEPTEMBER(30,9),
+        OCTOBER(31,10),
+        NOVEMBER(30,11),
+        DECEMBER(31,12);
 
-        Month fromString(String str)
+        public int days;
+        public int number;
+
+        private Month(int days, int number)
         {
-            String[] min = {"J", "F", "MAR", "AP", "MAY", "JUN", "JUL", "AU", "S", "O", "N", "D"};
-            var s = str.toUpperCase(); 
-            for (int j = 0; j < values().length; j++) {
-                var m = min[j];
-                var month = values()[j].toString().toUpperCase();
-                for (int i = 0; i < m.length() && i < s.length(); i++) {
-                    if(m.charAt(i) != s.charAt(i)) 
-                    {
-                        break;
-                    }
-                    else if(i == m.length())
-                    {
-                        var s1 = s.substring(m.length());
-                        var m1 = month.substring(m.length());
+            this.days = days;
+            this.number = number;
+        }
 
-                        if(s1.length() > m1.length()) throw new IllegalArgumentException();
-                        else if(s1.length() == m1.length()){
-                            if(s1.equals(m1)){
-                                return values()[j];
-                            } else {
-                                throw new IllegalArgumentException();
-                            }
-                        }
-                        else {
-                            for (int k = 0; k < s1.length(); k++) {
-                                if(s1.charAt(k) != m1.charAt(k))
-                                {
-                                    throw new IllegalArgumentException();
-                                }
-                            }
-                            return values()[j];
-                        }
+        static Month fromString(String str)
+        {
+            if (str == null || str.isBlank()) {
+                throw new IllegalArgumentException("Month name cannot be null or empty");
+            }
+
+            String s = str.trim().toUpperCase();
+            Month matched = null;
+
+            for (Month m : values()) {
+                if (m.name().startsWith(s)) {
+                    if (matched != null) {
+                        throw new IllegalArgumentException("Ambiguous month abbreviation: " + str);
                     }
+                    matched = m;
                 }
             }
-            throw new IllegalArgumentException();
+
+            if (matched == null) {
+                throw new IllegalArgumentException("Unknown month: " + str);
+            }
+
+            return matched;
         }
     }
+    private class SortByMonthOrder implements Comparator<String>{
+
+        @Override
+        public int compare(String arg0, String arg1) {
+            Month m1 = Month.fromString(arg0);
+            Month m2 = Month.fromString(arg1);
+            if(m1.number == m2.number) return 0;
+            return m1.number < m2.number ? -1 : +1;
+        }
+
+    }
+
+    private class SortByDate implements Comparator<String>{
+
+        @Override
+        public int compare(String arg0, String arg1) {
+            Month m1 = Month.fromString(arg0);
+            Month m2 = Month.fromString(arg1);
+            if(m1.days == m2.days) return 0;
+            return m1.days < m2.days ? -1 : +1;
+        }
+        
+    }
+
 }
 
 

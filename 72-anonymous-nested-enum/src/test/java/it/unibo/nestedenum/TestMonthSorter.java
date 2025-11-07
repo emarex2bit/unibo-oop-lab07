@@ -1,8 +1,12 @@
 package it.unibo.nestedenum;
 
-import it.unibo.functional.api.Function;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
+import static it.unibo.functional.Transformers.flattenTransform;
+import static it.unibo.functional.Transformers.reject;
+import static it.unibo.functional.Transformers.select;
+import static it.unibo.functional.Transformers.transform;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,13 +18,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
-import static it.unibo.functional.Transformers.flattenTransform;
-import static it.unibo.functional.Transformers.reject;
-import static it.unibo.functional.Transformers.select;
-import static it.unibo.functional.Transformers.transform;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
+import it.unibo.functional.api.Function;
 
 /**
  * Tests the {@link MonthSorterNested} class.
